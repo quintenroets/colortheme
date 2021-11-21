@@ -55,11 +55,13 @@ def change_colortheme(old, new):
         f"konsave -a $(konsave -l | grep {new} | cut -f1)"
     )
     
-    time.sleep(2)
+    #time.sleep(2)
         
     for program, opened in open_programs.items():
-        if opened and program != "chromium":
-            close(program)
+        if opened:
+            if program != "chromium":
+                close(program)
+                time.sleep(0.5)
             Cli.run(program, wait=False)
     
     restartplasma()
@@ -72,20 +74,21 @@ def restartplasma():
     Cli.run(
         "plasmashell --replace",
         "kwin --replace",
-        "systemctl --user restart pulseaudio",
         wait=False
         )
     
 def save_light():
-    save_theme("light")
+    if FileManager.load("settings") == "dark":
+        save_theme("light")
     
 def save_dark():
-    save_theme("dark")
+    if FileManager.load("settings") == "light":
+        save_theme("dark")
     
 def save_theme(name):
     Cli.run(
         f"konsave -f -s {name}",
-        "konsave -e $(konsave -l | grep light | cut -f1)"
+        f"konsave -e $(konsave -l | grep {name} | cut -f1)"
         )
  
 if __name__ == "__main__":
