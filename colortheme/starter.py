@@ -6,7 +6,7 @@ import time
 import getpass
 
 from libs.cli import Cli
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from .filemanager import FileManager
 
@@ -19,8 +19,8 @@ def check_theme():
     location_info = astral.LocationInfo(location["city"], location["region"], location["country"])
     sun_info = sun(location_info.observer)
     
-    dawn = sun_info["dawn"].replace(tzinfo=None)    
-    dusk = sun_info["dusk"].replace(tzinfo=None)
+    dawn = sun_info["dawn"].replace(tzinfo=None) - timedelta(minutes=30) # light = dawn - 30 min
+    dusk = sun_info["dusk"].replace(tzinfo=None) + timedelta(minutes=30) # dark = dusk + 30 min
         
     settings = FileManager.load("settings")
     daytime = settings
@@ -54,14 +54,13 @@ def change_colortheme(old, new):
         f"konsave -f -s {old}",
         f"konsave -a $(konsave -l | grep {new} | cut -f1)"
     )
-    
-    #time.sleep(2)
-        
+            
     for program, opened in open_programs.items():
         if opened:
             if program != "chromium":
                 close(program)
-                time.sleep(0.5)
+                sleep_time = 2 if program == "pycharm" else 0.5
+                time.sleep(sleep_time)
             Cli.run(program, wait=False)
     
     restartplasma()
