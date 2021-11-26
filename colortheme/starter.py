@@ -24,13 +24,14 @@ def check_theme():
         
     settings = FileManager.load("settings")
     daytime = settings
-        
+            
     while daytime == settings:
         now = datetime.now()
         daytime = dawn < now and now < dusk
         daytime = "light" if daytime else "dark"
         if daytime == settings:
             time.sleep(5)
+            FileManager.save(daytime, "test")
     
     if daytime == "light":
         go_light()
