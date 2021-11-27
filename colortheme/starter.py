@@ -15,28 +15,48 @@ def main():
         check_theme()
 
 def check_theme():
-    location = geocoder.ip("me").current_result.raw
-    location_info = astral.LocationInfo(location["city"], location["region"], location["country"])
-    sun_info = sun(location_info.observer)
-    
-    dawn = sun_info["dawn"].replace(tzinfo=None) - timedelta(minutes=30) # light = dawn - 30 min
-    dusk = sun_info["dusk"].replace(tzinfo=None) + timedelta(minutes=30) # dark = dusk + 30 min
-        
+    dawn, dusk = get_sun_events()
     settings = FileManager.load("settings")
     daytime = settings
             
     while daytime == settings:
         now = datetime.now()
+        if now.date() > dusk.date():
+            # recalculate event if already next day
+            dawn, dusk = get_sun_events()
+        
         daytime = dawn < now and now < dusk
         daytime = "light" if daytime else "dark"
         if daytime == settings:
             time.sleep(5)
-            FileManager.save(daytime, "test")
+            FileManager.save([daytime, dawn, dusk, now], "test")
     
     if daytime == "light":
         go_light()
     elif daytime == "dark":
         go_dark()
+        
+def get_sun_events():
+    result = geocoder.ip("me").current_result
+    # fallback location when no internet
+    location = result.raw if result else {'city': 'Brugge', 'region': 'Flanders', 'country': 'BE'}
+    location_info = astral.LocationInfo(location["city"], location["region"], location["country"])
+    
+    dawn, dusk = get_sun_info(location_info)
+    now = datetime.now()
+    if now > dusk:
+        # get events for next day if already dark
+        dawn, dusk = get_sun_info(location_info, date=now+timedelta(days=1))
+    return dawn, dusk
+    
+
+def get_sun_info(location_info, date=None):
+    sun_info = sun(location_info.observer, date=date)
+    
+    dawn = sun_info["dawn"].replace(tzinfo=None) - timedelta(minutes=30) # light = dawn - 30 min
+    dusk = sun_info["dusk"].replace(tzinfo=None) + timedelta(minutes=30) # dark = dusk + 30 min
+    
+    return dawn, dusk
     
 def go_light():
     change_colortheme("dark", "light")
