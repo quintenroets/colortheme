@@ -25,8 +25,7 @@ def check_theme():
             # recalculate event if already next day
             dawn, dusk = get_sun_events()
         
-        daytime = dawn < now and now < dusk
-        daytime = "light" if daytime else "dark"
+        daytime = "light" if dawn < now < dusk else "dark"
         if daytime == settings:
             time.sleep(5)
             FileManager.save([daytime, dawn, dusk, now], "test")
