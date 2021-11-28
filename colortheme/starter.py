@@ -16,7 +16,7 @@ def main():
 
 def check_theme():
     dawn, dusk = get_sun_events()
-    settings = FileManager.load("settings")
+    settings = get_theme()
     daytime = settings
             
     while daytime == settings:
@@ -58,10 +58,12 @@ def get_sun_info(location_info, date=None):
     return dawn, dusk
     
 def go_light():
-    change_colortheme("dark", "light")
+    if get_theme() == "dark":
+        change_colortheme("dark", "light")
     
 def go_dark():
-    change_colortheme("light", "dark")
+    if get_theme() == "light":
+        change_colortheme("light", "dark")
     
 def change_colortheme(old, new):
     programs = ["chromium", "pycharm", "dolphin", "kate"]
@@ -69,11 +71,8 @@ def change_colortheme(old, new):
     
     if open_programs["chromium"]:
         close("chromium")
-        
-    Cli.get(
-        f"konsave -f -s {old}",
-        f"konsave -a $(konsave -l | grep {new} | cut -f1)"
-    )
+
+    change_config(old, new)
             
     for program, opened in open_programs.items():
         if opened:
@@ -85,6 +84,12 @@ def change_colortheme(old, new):
     
     restartplasma()
     FileManager.save(new, "settings")
+
+def change_config(old, new):
+    Cli.get(
+        f"konsave -f -s {old}",
+        f"konsave -a $(konsave -l | grep {new} | cut -f1)"
+    )
     
 def close(name):
     Cli.get(f"xdotool search --onlyvisible {name} | xargs -i% wmctrl -i -c %")
@@ -97,11 +102,11 @@ def restartplasma():
         )
     
 def save_light():
-    if FileManager.load("settings") == "dark":
+    if get_theme() == "dark":
         save_theme("light")
     
 def save_dark():
-    if FileManager.load("settings") == "light":
+    if get_theme() == "light":
         save_theme("dark")
     
 def save_theme(name):
@@ -109,6 +114,9 @@ def save_theme(name):
         f"konsave -f -s {name}",
         f"konsave -e $(konsave -l | grep {name} | cut -f1)"
         )
+    
+def get_theme():
+    return FileManager.load("settings")
  
 if __name__ == "__main__":
     main()
