@@ -28,7 +28,6 @@ def check_theme():
         daytime = "light" if dawn < now < dusk else "dark"
         if daytime == settings:
             time.sleep(5)
-            FileManager.save([daytime, dawn, dusk, now], "test")
     
     if daytime == "light":
         go_light()
