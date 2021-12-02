@@ -68,6 +68,14 @@ def change_colortheme(old, new):
     programs = ["chromium", "pycharm", "dolphin", "kate"]
     open_programs = {p: Cli.get(f"xdotool search --onlyvisible {p}", check=False) for p in programs}
     
+    ask_confirmation = any(open_programs.values())
+    if ask_confirmation:
+        try:
+            Cli.get(f"kdialog --yesno 'Change to {new} theme?'")
+        except:
+            return
+            # dont change colortheme if not confirmed
+    
     if open_programs["chromium"]:
         close("chromium")
 
