@@ -30,9 +30,9 @@ def check_theme():
             time.sleep(5)
     
     if daytime == "light":
-        go_light()
+        go_light(confirm=True)
     elif daytime == "dark":
-        go_dark()
+        go_dark(confirm=True)
         
 def get_sun_events():
     result = geocoder.ip("me").current_result
@@ -56,25 +56,32 @@ def get_sun_info(location_info, date=None):
     
     return dawn, dusk
     
-def go_light():
+def go_light(confirm=False):
     if get_theme() == "dark":
-        change_colortheme("dark", "light")
+        change_colortheme("dark", "light", confirm=confirm)
     
-def go_dark():
+def go_dark(confirm=False):
     if get_theme() == "light":
-        change_colortheme("light", "dark")
+        change_colortheme("light", "dark", confirm=confirm)
     
-def change_colortheme(old, new):
+def change_colortheme(old, new, confirm=False):
     programs = ["chromium", "pycharm", "dolphin", "kate"]
     open_programs = {p: Cli.get(f"xdotool search --onlyvisible {p}", check=False) for p in programs}
     
-    ask_confirmation = any(open_programs.values())
+    ask_confirmation = confirm and any(open_programs.values())
     if ask_confirmation:
         try:
             Cli.get(f"kdialog --yesno 'Change to {new} theme?'")
         except:
+            now = datetime.now()
+            dawn, dusk = get_sun_events()
+            next_event = dawn if now < dawn else dusk
+            while now < next_event:
+                time.sleep(5)
+                now = datetime.now()
             return
             # dont change colortheme if not confirmed
+            # and dont ask again until next event
     
     if open_programs["chromium"]:
         close("chromium")
@@ -109,11 +116,11 @@ def restartplasma():
         )
     
 def save_light():
-    if get_theme() == "dark":
+    if get_theme() == "light":
         save_theme("light")
     
 def save_dark():
-    if get_theme() == "light":
+    if get_theme() == "dark":
         save_theme("dark")
     
 def save_theme(name):
