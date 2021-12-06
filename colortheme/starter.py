@@ -1,5 +1,7 @@
 import sys
 
+from libs.errorhandler import ErrorHandler
+
 from .thememanager import ThemeManager
 
 def main():
@@ -9,6 +11,10 @@ def main():
             ThemeManager.change_colortheme(theme)
         elif f"save{theme}" in args:
             ThemeManager.save_theme(theme)
+            
+    if not args:
+        while True:
+            ThemeManager.check_theme()
 
 def go_dark():
     ThemeManager.change_colortheme("dark")
@@ -26,4 +32,5 @@ def restartplasma():
     ThemeManager.restartplasma()
 
 if __name__ == "__main__":
-    main()
+    with ErrorHandler():
+        main()
