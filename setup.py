@@ -1,5 +1,4 @@
 from setuptools import setup, find_packages
-from libs.cli import Cli
 
 NAME = "colortheme"
 
@@ -31,5 +30,3 @@ setup(
             ]
         },
 )
-
-Cli.install(read("packages.txt"))
