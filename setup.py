@@ -21,7 +21,7 @@ setup(
     install_requires=read("requirements.txt"),
     entry_points={
         "console_scripts": [
-            "colortheme = colortheme.starter:main",
+            "colorthemechecker = colortheme.starter:main",
             "dark = colortheme.starter:go_dark",
             "light = colortheme.starter:go_light",
             "savelight = colortheme.starter:save_light",
