@@ -28,14 +28,14 @@ class ThemeManager:
             daytime = "light" if dawn < now < dusk else "dark"
             if daytime == settings:
                 time.sleep(5)
-
+        
         ThemeManager.change_colortheme(daytime, confirm=True)
 
     @staticmethod
     def get_sun_events():
         result = geocoder.ip("me").current_result
-        # fallback location when no internet
-        location = result.raw if result else {'city': 'Brugge', 'region': 'Flanders', 'country': 'BE'}
+        # fallback location when no internet or too many requests
+        location = result.raw if result else {'city': 'Brugge', 'region': 'Flanders', 'country': 'BE'}        
         location_info = astral.LocationInfo(location["city"], location["region"], location["country"])
 
         dawn, dusk = ThemeManager.get_sun_info(location_info)
@@ -69,7 +69,7 @@ class ThemeManager:
             )
             if canceled:
                 now = datetime.now()
-                dawn, dusk = get_sun_events()
+                dawn, dusk = ThemeManager.get_sun_events()
                 next_event = dawn if now < dawn else dusk
                 while now < next_event:
                     time.sleep(5)
@@ -125,7 +125,10 @@ class ThemeManager:
 
     @staticmethod
     def get_theme():
-        return FileManager.load("settings")
+        theme = FileManager.load("settings")
+        if not theme: # use default theme if not present
+            theme = "light"
+        return theme
  
 if __name__ == "__main__":
     main()
