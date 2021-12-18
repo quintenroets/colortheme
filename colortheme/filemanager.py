@@ -1,6 +1,6 @@
-from . import constants
+from pathlib import Path
+
 from libs.filemanager import FileManager as FileManagerLib
 
 class FileManager(FileManagerLib):
-    root = constants.ASSETS_PATH
-
+    root = FileManagerLib.root / Path(__file__).parent.name
