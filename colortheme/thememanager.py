@@ -59,7 +59,7 @@ class ThemeManager:
         old = "dark" if new == "light" else "light"
         if ThemeManager.get_theme() == old:
             programs = ["chromium", "pycharm", "dolphin", "kate"]
-            if confirm:
+            if confirm and False:
                 programs.append("konsole")
             open_programs = [p for p in programs if Cli.get(f"xdotool search --onlyvisible {p}", check=False)]
             canceled = (
