@@ -10,8 +10,6 @@ def read(filename):
         content = []
     return content
 
-from libs.cli import Cli
-
 setup(
     author="Quinten Roets",
     author_email="quinten.roets@gmail.com",
@@ -19,7 +17,6 @@ setup(
     name=NAME,
     version='1.0',
     packages=find_packages(),
-    setup_requires=["libs @ git+https://@github.com/quintenroets/libs"],
     install_requires=read("requirements.txt"),
     entry_points={
         "console_scripts": [
