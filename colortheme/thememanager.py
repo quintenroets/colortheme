@@ -30,8 +30,15 @@ class ThemeManager:
             daytime = "light" if dawn < now < dusk else "dark"
             if daytime == settings:
                 time.sleep(5)
-        
-        ThemeManager.change_colortheme(daytime, confirm=True)
+
+        applied = ThemeManager.apply(daytime, ask_confirm=True)
+
+        if not applied:
+            # wait until next event before checking again
+            next_event = dawn if now < dawn else dusk
+            while now < next_event:
+                time.sleep(5)
+                now = datetime.now()
 
     @staticmethod
     def get_sun_events():
@@ -57,36 +64,28 @@ class ThemeManager:
         return dawn, dusk
 
     @staticmethod
-    def change_colortheme(new, confirm=False):
-        old = "dark" if new == "light" else "light"
-        if ThemeManager.get_theme() == old:
-            programs = ["chromium", "pycharm", "dolphin", "kate"]
-            if confirm and False:
-                programs.append("konsole")
-            open_programs = [p for p in programs if Cli.get(f"xdotool search --onlyvisible {p}", check=False)]
-            canceled = (
-                confirm and
-                any(open_programs) and
-                not Gui.ask_yn(f"Change to {new} theme?")
-            )
-            if canceled:
-                now = datetime.now()
-                dawn, dusk = ThemeManager.get_sun_events()
-                next_event = dawn if now < dawn else dusk
-                while now < next_event:
-                    time.sleep(5)
-                    now = datetime.now()
-                # dont change colortheme if not confirmed
-                # and dont ask again until next event
-            else:
-                ThemeManager.start_colortheme_change(old, new, open_programs)
+    def apply(name, ask_confirm=False):
+        programs = ["chromium", "pycharm", "dolphin", "kate"]
+        if confirm and False:
+            programs.append("konsole")
+
+        open_programs = [p for p in programs if Cli.get(f"xdotool search --onlyvisible {p}", check=False)]
+        confirmed = (
+            not ask_confirm
+            or not any(open_programs)
+            or Gui.ask_yn(f"Change to {new} theme?")
+        )
+        if confirmed:
+            ThemeManager.start_apply(name, open_programs)
+
+        return confirmed
 
     @staticmethod
-    def start_colortheme_change(old, new, open_programs):
+    def start_apply(name, open_programs):
         if "chromium" in open_programs:
             ThemeManager.close("chromium")
 
-        ThemeManager.change_config(old, new)
+        ProfileManager.apply(name)
         ThemeManager.restartplasma()
         Threads(ThemeManager.close, open_programs).join()
         # qdbus org.kde.KWin /KWin reconfigure  -> reload title bars for applications
@@ -98,13 +97,6 @@ class ThemeManager:
 
         Threads(Cli.run, open_programs, wait=False).join()
         FileManager.save(new, "settings")
-
-    @staticmethod
-    def change_config(old, new):
-        Cli.get(
-            f"konsave -f -s {old}",
-            f"konsave -a $(konsave -l | grep {new} | cut -f1)"
-        )
 
     @staticmethod
     def close(name):

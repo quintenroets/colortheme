@@ -9,24 +9,16 @@ def main():
     for theme in ["light", "dark"]:
         if theme in args:
             ThemeManager.change_colortheme(theme)
-        elif f"save{theme}" in args:
-            ThemeManager.save_theme(theme)
             
     if not args:
         while True:
             ThemeManager.check_theme()
 
 def go_dark():
-    ThemeManager.change_colortheme("dark")
+    ThemeManager.apply("dark")
 
 def go_light():
-    ThemeManager.change_colortheme("light")
-
-def save_light():
-    ThemeManager.save_theme("light")
-
-def save_dark():
-    ThemeManager.save_theme("dark")
+    ThemeManager.apply("light")
 
 def restartplasma():
     ThemeManager.restartplasma()
