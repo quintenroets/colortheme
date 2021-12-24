@@ -96,7 +96,6 @@ class ThemeManager:
             open_programs.append("pycharm-professional")
 
         Threads(Cli.run, open_programs, wait=False).join()
-        FileManager.save(new, "settings")
 
     @staticmethod
     def close(name):
