@@ -5,6 +5,8 @@ from datetime import datetime
 import time
 import getpass
 
+from backup.profilemanager import ProfileManager
+
 from libs.cli import Cli
 from libs.gui import Gui
 from libs.threading import Threads
@@ -115,21 +117,6 @@ class ThemeManager:
     @staticmethod
     def restartplasma():
         Cli.run("plasmashell --replace", "kwin --replace", wait=False)
-
-    @staticmethod
-    def save_theme(name):
-        if ThemeManager.get_theme() == name:
-            Cli.run(
-                f"konsave -f -s {name}",
-                f"konsave -e $(konsave -l | grep {name} | cut -f1)"
-                )
-
-    @staticmethod
-    def get_theme():
-        theme = FileManager.load("settings")
-        if not theme: # use default theme if not present
-            theme = "light"
-        return theme
  
 if __name__ == "__main__":
     main()
