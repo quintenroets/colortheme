@@ -87,6 +87,7 @@ class ThemeManager:
         ThemeManager.change_config(old, new)
         ThemeManager.restartplasma()
         Threads(ThemeManager.close, open_programs).join()
+        # qdbus org.kde.KWin /KWin reconfigure  -> reload title bars for applications
 
         if "pycharm" in open_programs:
             time.sleep(1.5)

@@ -21,8 +21,6 @@ setup(
     entry_points={
         "console_scripts": [
             "colorthemechecker = colortheme.starter:main",
-            "dark = colortheme.starter:go_dark",
-            "light = colortheme.starter:go_light",
             "savelight = colortheme.starter:save_light",
             "savedark = colortheme.starter:save_dark",
             "restartplasma = colortheme.starter:restartplasma",
