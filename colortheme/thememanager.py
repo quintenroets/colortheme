@@ -63,7 +63,7 @@ class ThemeManager:
 
     @staticmethod
     def apply(name, ask_confirm=False):
-        programs = ["chromium", "pycharm", "dolphin", "kate"]
+        programs = ["pycharm", "dolphin", "kate"] # chromium
         if ask_confirm and False:
             programs.append("konsole")
 
