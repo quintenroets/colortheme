@@ -18,7 +18,7 @@ class ThemeManager:
     @staticmethod
     def check_theme():
         dawn, dusk = ThemeManager.get_sun_events()
-        settings = ThemeManager.get_theme()
+        settings = ProfileManager.get_active()
         daytime = settings
 
         while daytime == settings:

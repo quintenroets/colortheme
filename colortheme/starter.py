@@ -8,7 +8,7 @@ def main():
     args = sys.argv[1:]
     for theme in ["light", "dark"]:
         if theme in args:
-            ThemeManager.change_colortheme(theme)
+            ThemeManager.apply(theme)
             
     if not args:
         while True:
