@@ -66,7 +66,7 @@ class ThemeManager:
     @staticmethod
     def apply(name, ask_confirm=False):
         programs = ["chromium", "pycharm", "dolphin", "kate"]
-        if confirm and False:
+        if ask_confirm and False:
             programs.append("konsole")
 
         open_programs = [p for p in programs if Cli.get(f"xdotool search --onlyvisible {p}", check=False)]
