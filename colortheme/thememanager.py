@@ -12,8 +12,6 @@ from libs.gui import Gui
 from libs.threading import Threads
 from datetime import datetime, timedelta
 
-from .filemanager import FileManager
-
 class ThemeManager:
     @staticmethod
     def check_theme():
