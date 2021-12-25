@@ -15,13 +15,16 @@ def main():
             ThemeManager.check_theme()
 
 def go_dark():
-    ThemeManager.apply("dark")
+    with ErrorHandler():
+        ThemeManager.apply("dark")
 
 def go_light():
-    ThemeManager.apply("light")
+    with ErrorHandler():
+        ThemeManager.apply("light")
 
 def restartplasma():
-    ThemeManager.restartplasma()
+    with ErrorHandler():
+        ThemeManager.restartplasma()
 
 if __name__ == "__main__":
     with ErrorHandler():
