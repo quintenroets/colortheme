@@ -83,15 +83,14 @@ class ThemeManager:
         if "chromium" in open_programs:
             ThemeManager.close("chromium")
 
+        if "pycharm" in open_programs:
+            open_programs.remove("pycharm")
+            ThemeManager.apply_pycharm(name)
+
         ProfileManager.apply(name)
         ThemeManager.restartplasma()
         Threads(ThemeManager.close, open_programs).join()
         # qdbus org.kde.KWin /KWin reconfigure  -> reload title bars for applications
-
-        if "pycharm" in open_programs:
-            time.sleep(1.5)
-            open_programs.remove("pycharm")
-            open_programs.append("pycharm-professional")
 
         Threads(Cli.run, open_programs, wait=False).join()
 
@@ -106,6 +105,11 @@ class ThemeManager:
     @staticmethod
     def restartplasma():
         Cli.run("plasmashell --replace", "kwin --replace", wait=False)
- 
-if __name__ == "__main__":
-    main()
+
+    @staticmethod
+    def apply_pycharm(name):
+        letter = "d" if name == "dark" else "i"
+        Cli.run(
+            "jumpapp pycharm",
+            f"xdotool key --clearmodifiers ctrl+shift+alt+y t Return {letter} Return"
+        )
