@@ -95,8 +95,6 @@ class ThemeManager:
         ProfileManager.apply(name)
         ThemeManager.restartplasma()
         Threads(ThemeManager.close, open_programs).join()
-        # qdbus org.kde.KWin /KWin reconfigure  -> reload title bars for applications
-
         Threads(Cli.run, open_programs, wait=False).join()
 
     @staticmethod
