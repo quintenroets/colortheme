@@ -33,6 +33,9 @@ class ThemeManager:
             daytime = "light" if dawn < now < dusk else "dark"
             if daytime == settings:
                 time.sleep(5)
+            else:
+                 # reload settings to make sure that theme has not been changed manually already
+                settings = ProfileManager.get_active()
 
         applied = ThemeManager.apply(daytime, ask_confirm=True)
 
