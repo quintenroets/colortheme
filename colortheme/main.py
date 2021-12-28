@@ -20,7 +20,7 @@ def _main(action=None):
     
     if args.action == "check":
         ThemeManager.start_check_service()
-    elif args.action == "restartplasma":
+    elif args.action == "restart":
         ThemeManager.restartplasma()
     else:
         ThemeManager.apply(args.action)
