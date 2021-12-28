@@ -20,10 +20,10 @@ setup(
     install_requires=read("requirements.txt"),
     entry_points={
         "console_scripts": [
-            "colorthemechecker = colortheme.starter:main",
-            "light = colortheme.starter:go_light",
-            "dark = colortheme.starter:go_dark",
-            "restartplasma = colortheme.starter:restartplasma",
+            "colortheme = colortheme.main:main",
+            "light = colortheme.main:go_light",
+            "dark = colortheme.main:go_dark",
+            "restartplasma = colortheme.main:restartplasma",
             ]
         },
 )

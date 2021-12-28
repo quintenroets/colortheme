@@ -14,6 +14,11 @@ from datetime import datetime, timedelta
 
 class ThemeManager:
     @staticmethod
+    def start_check_service():
+        while True:
+            ThemeManager.check_theme()
+    
+    @staticmethod
     def check_theme():
         dawn, dusk = ThemeManager.get_sun_events()
         settings = ProfileManager.get_active()
@@ -71,7 +76,7 @@ class ThemeManager:
         confirmed = (
             not ask_confirm
             or not any(open_programs)
-            or Gui.ask_yn(f"Change to {new} theme?")
+            or Gui.ask_yn(f"Change to {name} theme?")
         )
         if confirmed:
             ThemeManager.start_apply(name, open_programs)
