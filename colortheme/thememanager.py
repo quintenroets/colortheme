@@ -71,7 +71,7 @@ class ThemeManager:
 
     @staticmethod
     def apply(name, ask_confirm=False):
-        programs = ["pycharm", "dolphin", "kate"] # chromium
+        programs = ["pycharm", "dolphin", "kate", "chromium"]
         if ask_confirm and False:
             programs.append("konsole")
 
@@ -88,17 +88,25 @@ class ThemeManager:
 
     @staticmethod
     def start_apply(name, open_programs):
-        if "chromium" in open_programs:
-            ThemeManager.close("chromium")
+        chromium = "chromium" in open_programs
+        if chromium:
+            open_programs.remove("chromium")
 
-        if "pycharm" in open_programs:
+        pycharm = "pycharm" in open_programs
+        if pycharm:
             open_programs.remove("pycharm")
-            ThemeManager.apply_pycharm(name)
 
         ProfileManager.apply(name)
         ThemeManager.restartplasma()
         Threads(ThemeManager.close, open_programs).join()
         Threads(Cli.run, open_programs, wait=False).join()
+        
+        time.sleep(2)
+        
+        if pycharm:
+            ThemeManager.apply_pycharm(name)
+        if chromium:
+            ThemeManager.apply_chromium(name)
 
     @staticmethod
     def close(name):
@@ -118,4 +126,20 @@ class ThemeManager:
         Cli.run(
             "jumpapp pycharm",
             f"xdotool key --clearmodifiers ctrl+shift+alt+y t Return {letter} Return"
+        )
+
+    @staticmethod
+    def apply_chromium(name):
+        direction = "Left" if name == "light" else "Right"
+        Cli.run(            
+            "jumpapp chromium",
+            "sleep 1",
+            "xdotool key ctrl+t",
+            "xdotool type chrome://flags",
+            "xdotool key Return",
+            "sleep 0.5", 
+            "xdotool type dark",
+            "xdotool key Return",
+            "sleep 0.5",
+            f"xdotool key --delay 10 Tab Tab Tab Tab Tab Tab {direction} Tab Return",
         )
