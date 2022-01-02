@@ -40,6 +40,7 @@ class ThemeManager:
         applied = ThemeManager.apply(daytime, ask_confirm=True)
 
         if not applied:
+            time.sleep(5) # wait a little bit to make sure that next event is not current event
             # wait until next event before checking again
             next_event = dawn if now < dawn else dusk
             while now < next_event:
