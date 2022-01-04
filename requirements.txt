@@ -1,4 +1,4 @@
-libs @ git+https://@github.com/quintenroets/libs
-backup @ git+https://@github.com/quintenroets/backup
+libs @ git+https://github.com/quintenroets/libs
+backup @ git+https://github.com/quintenroets/backup
 geocoder
 astral
