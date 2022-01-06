@@ -1,16 +1,15 @@
 import geocoder
 import astral
 from astral.sun import sun
-from datetime import datetime
+from datetime import datetime, timedelta
 import time
-import getpass
 
 from backup.profilemanager import ProfileManager
 
 from libs.cli import Cli
 from libs.gui import Gui
 from libs.threading import Threads
-from datetime import datetime, timedelta
+
 
 class ThemeManager:
     @staticmethod
@@ -40,8 +39,9 @@ class ThemeManager:
         applied = ThemeManager.apply(daytime, ask_confirm=True)
 
         if not applied:
-            time.sleep(5) # wait a little bit to make sure that next event is not current event
-            # wait until next event before checking again
+            # wait until next event before checking and asking again
+            if now > dusk: # future events needed
+                dawn, dusk = get_sun_events()
             next_event = dawn if now < dawn else dusk
             while now < next_event:
                 time.sleep(5)
@@ -73,9 +73,6 @@ class ThemeManager:
     @staticmethod
     def apply(name, ask_confirm=False):
         programs = ["pycharm", "dolphin", "kate", "chromium"]
-        if ask_confirm and False:
-            programs.append("konsole")
-
         open_programs = [p for p in programs if Cli.get(f"xdotool search --onlyvisible {p}", check=False)]
         confirmed = (
             not ask_confirm
