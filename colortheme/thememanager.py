@@ -41,7 +41,7 @@ class ThemeManager:
         if not applied:
             # wait until next event before checking and asking again
             if now > dusk: # future events needed
-                dawn, dusk = get_sun_events()
+                dawn, dusk = ThemeManager.get_sun_events()
             next_event = dawn if now < dawn else dusk
             while now < next_event:
                 time.sleep(5)
