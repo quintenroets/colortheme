@@ -26,7 +26,7 @@ class ThemeManager:
     @staticmethod
     def check_theme():
         sunhours = ThemeManager.sun_hours
-        daytime = "light" if sunhours.dawn < now < sunhours.dusk else "dark"
+        daytime = "light" if sunhours.dawn < datetime.now() < sunhours.dusk else "dark"
         if daytime != ProfileManager.active_profile:
             ThemeManager.apply(daytime, ask_confirm=True)
         
