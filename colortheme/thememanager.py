@@ -11,6 +11,12 @@ from libs.gui import Gui
 from libs.threading import Threads
 
 
+class SunHours:
+    def __init__(self, dawn, dusk):
+        self.dawn = dawn
+        self.dusk = dusk
+
+
 class ThemeManager:
     @staticmethod
     def start_check_service():
@@ -19,47 +25,28 @@ class ThemeManager:
     
     @staticmethod
     def check_theme():
-        dawn, dusk = ThemeManager.get_sun_events()
-        settings = ProfileManager.get_active()
-        daytime = settings
+        sunhours = ThemeManager.sun_hours
+        daytime = "light" if sunhours.dawn < now < sunhours.dusk else "dark"
+        if daytime != ProfileManager.active_profile:
+            ThemeManager.apply(daytime, ask_confirm=True)
+        
+        next_event = sunhours.dawn if now < sunhours.dawn else sunhours.dusk
+        while datetime.now() < next_event:
+            time.sleep(5)
 
-        while daytime == settings:
-            now = datetime.now()
-            if now.date() > dusk.date():
-                # recalculate event if already next day
-                dawn, dusk = ThemeManager.get_sun_events()
-
-            daytime = "light" if dawn < now < dusk else "dark"
-            if daytime == settings:
-                time.sleep(5)
-            else:
-                 # reload settings to make sure that theme has not been changed manually already
-                settings = ProfileManager.get_active()
-
-        applied = ThemeManager.apply(daytime, ask_confirm=True)
-
-        if not applied:
-            # wait until next event before checking and asking again
-            if now > dusk: # future events needed
-                dawn, dusk = ThemeManager.get_sun_events()
-            next_event = dawn if now < dawn else dusk
-            while now < next_event:
-                time.sleep(5)
-                now = datetime.now()
-
-    @staticmethod
-    def get_sun_events():
+    @property
+    @classmethod
+    def sun_hours(cls):
         result = geocoder.ip("me").current_result
         # fallback location when no internet or too many requests
         location = result.raw if result else {'city': 'Brugge', 'region': 'Flanders', 'country': 'BE'}        
         location_info = astral.LocationInfo(location["city"], location["region"], location["country"])
 
-        dawn, dusk = ThemeManager.get_sun_info(location_info)
-        now = datetime.now()
-        if now > dusk:
+        sunhours = ThemeManager.get_sun_info(location_info)
+        if datetime.now() > sunhours.dusk:
             # get events for next day if already dark
-            dawn, dusk = ThemeManager.get_sun_info(location_info, date=now+timedelta(days=1))
-        return dawn, dusk
+            sunhours = ThemeManager.get_sun_info(location_info, date=now+timedelta(days=1))
+        return sunhours
     
     @staticmethod
     def get_sun_info(location_info, date=None):
@@ -67,8 +54,8 @@ class ThemeManager:
 
         dawn = sun_info["dawn"].replace(tzinfo=None) - timedelta(minutes=30) # light = dawn - 30 min
         dusk = sun_info["dusk"].replace(tzinfo=None) + timedelta(minutes=30) # dark = dusk + 30 min
-
-        return dawn, dusk
+        
+        return SunHours(dawn, dusk)
 
     @staticmethod
     def apply(name, ask_confirm=False):
