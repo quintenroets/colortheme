@@ -34,8 +34,8 @@ class ThemeManager:
         while datetime.now() < next_event:
             time.sleep(5)
 
-    @property
     @classmethod
+    @property
     def sun_hours(cls):
         result = geocoder.ip("me").current_result
         # fallback location when no internet or too many requests
@@ -43,8 +43,8 @@ class ThemeManager:
         location_info = astral.LocationInfo(location["city"], location["region"], location["country"])
 
         sunhours = ThemeManager.get_sun_info(location_info)
-        if datetime.now() > sunhours.dusk:
-            # get events for next day if already dark
+        now = datetime.now()
+        if now > sunhours.dusk:  # get events for next day if already dark
             sunhours = ThemeManager.get_sun_info(location_info, date=now+timedelta(days=1))
         return sunhours
     
