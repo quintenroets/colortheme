@@ -1,12 +1,13 @@
-import geocoder
 import astral
+import cli
+import geocoder
+import time
+
 from astral.sun import sun
 from datetime import datetime, timedelta
-import time
 
 from backup.profilemanager import ProfileManager
 
-from libs.cli import Cli
 from libs.gui import Gui
 from libs.threading import Threads
 
@@ -61,7 +62,7 @@ class ThemeManager:
     @staticmethod
     def apply(name, ask_confirm=False):
         programs = ["pycharm", "dolphin", "kate", "chromium"]
-        open_programs = [p for p in programs if Cli.get(f"xdotool search --onlyvisible {p}", check=False)]
+        open_programs = [p for p in programs if cli.get(f"xdotool search --onlyvisible {p}", check=False)]
         confirmed = (
             not ask_confirm
             or not any(open_programs)
@@ -96,10 +97,10 @@ class ThemeManager:
 
     @staticmethod
     def close(name):
-        Cli.get(f"xdotool search --onlyvisible {name} | xargs -i% wmctrl -i -c %")
+        cli.get(f"xdotool search --onlyvisible {name} | xargs -i% wmctrl -i -c %")
         time.sleep(0.5)
         # wait until closed
-        while Cli.get(f"xdotool search --onlyvisible {name}", check=False):
+        while cli.get(f"xdotool search --onlyvisible {name}", check=False):
             time.sleep(0.5)
 
     @staticmethod
@@ -109,7 +110,7 @@ class ThemeManager:
     @staticmethod
     def apply_pycharm(name):
         letter = "d" if name == "dark" else "i"
-        Cli.run(
+        cli.run(
             "jumpapp pycharm",
             f"xdotool key --clearmodifiers ctrl+shift+alt+y t Return {letter} Return"
         )
@@ -117,7 +118,7 @@ class ThemeManager:
     @staticmethod
     def apply_chromium(name):
         direction = "Left" if name == "light" else "Right"
-        Cli.run(            
+        cli.run(            
             "jumpapp chromium",
             "sleep 1",
             "xdotool key ctrl+t",

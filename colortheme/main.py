@@ -1,13 +1,11 @@
 import argparse
-
-from libs.cli import Cli
-from libs.errorhandler import ErrorHandler
+import cli
 
 from .thememanager import ThemeManager
 
 
 def main(action=None):
-    with ErrorHandler():
+    with cli.errorhandler():
         _main(action=action)
 
 
