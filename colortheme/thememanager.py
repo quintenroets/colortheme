@@ -105,7 +105,7 @@ class ThemeManager:
 
     @staticmethod
     def restartplasma():
-        Cli.run("plasmashell --replace", "kwin --replace", wait=False)
+        cli.start("plasmashell --replace", "kwin --replace")
 
     @staticmethod
     def apply_pycharm(name):
