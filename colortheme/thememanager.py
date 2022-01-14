@@ -1,6 +1,7 @@
 import astral
 import cli
 import geocoder
+import gui
 import time
 
 from astral.sun import sun
@@ -8,7 +9,6 @@ from datetime import datetime, timedelta
 
 from backup.profilemanager import ProfileManager
 
-from libs.gui import Gui
 from libs.threading import Threads
 
 
@@ -66,7 +66,7 @@ class ThemeManager:
         confirmed = (
             not ask_confirm
             or not any(open_programs)
-            or Gui.ask_yn(f"Change to {name} theme?")
+            or gui.ask_yn(f"Change to {name} theme?")
         )
         if confirmed:
             ThemeManager.start_apply(name, open_programs)

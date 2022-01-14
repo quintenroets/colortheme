@@ -1,3 +1,4 @@
+gui @ git+https://github.com/quintenroets/gui
 libs @ git+https://github.com/quintenroets/libs
 backup @ git+https://github.com/quintenroets/backup
 geocoder
