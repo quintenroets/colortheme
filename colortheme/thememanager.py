@@ -9,7 +9,7 @@ from datetime import datetime, timedelta
 
 from backup.profilemanager import ProfileManager
 
-from libs.threading import Threads
+from tbhandler.threading import Threads
 
 
 class SunHours:
