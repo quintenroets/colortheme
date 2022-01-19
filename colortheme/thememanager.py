@@ -9,7 +9,7 @@ from datetime import datetime, timedelta
 
 from backup.profilemanager import ProfileManager
 
-from tbhandler.threading import Threads
+from libs.threading import Threads
 
 
 class SunHours:
@@ -85,7 +85,7 @@ class ThemeManager:
 
         ProfileManager.apply(name)
         ThemeManager.restartplasma()
-        Threads(ThemeManager.restart, open_programs).join()
+        Threads(ThemeManager.restart, args=open_programs).start().join()
         
         time.sleep(2)
         
