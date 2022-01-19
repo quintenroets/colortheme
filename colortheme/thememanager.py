@@ -85,7 +85,7 @@ class ThemeManager:
 
         ProfileManager.apply(name)
         ThemeManager.restartplasma()
-        Threads(ThemeManager.restart, args=open_programs).start().join()
+        Threads(ThemeManager.restart, args=(open_programs, )).start().join()
         
         time.sleep(2)
         
