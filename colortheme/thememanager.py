@@ -75,24 +75,23 @@ class ThemeManager:
 
     @staticmethod
     def start_apply(name, open_programs):
-        chromium = 'chromium' in open_programs
-        if chromium:
-            open_programs.remove('chromium')
-
-        pycharm = 'pycharm' in open_programs
-        if pycharm:
-            open_programs.remove('pycharm')
+        custom_apply_mapping = {
+            'chromium': ThemeManager.apply_chromium,
+            'pycharm': ThemeManager.apply_pycharm
+            }
+        custom_apply = set({})
+        for name, function in custom_apply_mapping.items():
+            if name in open_programs:
+                open_programs.remove(name)
+                custom_apply.add(function)
 
         ProfileManager.apply(name)
         ThemeManager.restartplasma()
         Threads(ThemeManager.restart, args=(open_programs, )).start().join()
         
-        time.sleep(2)
-        
-        if pycharm:
-            ThemeManager.apply_pycharm(name)
-        if chromium:
-            ThemeManager.apply_chromium(name)
+        for custom in custom_apply:
+            time.sleep(2)
+            custom()
 
     @staticmethod
     def restart(name):
