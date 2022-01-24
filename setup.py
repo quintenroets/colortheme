@@ -1,29 +1,31 @@
-from setuptools import setup, find_packages
+from setuptools import find_packages, setup
 
-NAME = 'colortheme'
+NAME = "colortheme"
+
 
 def read(filename):
     try:
         with open(filename) as fp:
-            content = fp.read().split('\n')
+            content = fp.read().split("\n")
     except FileNotFoundError:
         content = []
     return content
 
+
 setup(
-    author='Quinten Roets',
-    author_email='quinten.roets@gmail.com',
-    description='',
+    author="Quinten Roets",
+    author_email="quinten.roets@gmail.com",
+    description="",
     name=NAME,
-    version='1.0',
+    version="1.0",
     packages=find_packages(),
-    install_requires=read('requirements.txt'),
+    install_requires=read("requirements.txt"),
     entry_points={
-        'console_scripts': [
-            'colortheme = colortheme.main:main',
-            'light = colortheme.main:go_light',
-            'dark = colortheme.main:go_dark',
-            'restartplasma = colortheme.main:restartplasma',
-            ]
-        },
+        "console_scripts": [
+            "colortheme = colortheme.main:main",
+            "light = colortheme.main:go_light",
+            "dark = colortheme.main:go_dark",
+            "restartplasma = colortheme.main:restartplasma",
+        ]
+    },
 )
