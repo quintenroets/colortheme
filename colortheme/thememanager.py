@@ -1,74 +1,32 @@
 import time
-from datetime import datetime, timedelta
-
-import astral
-import geocoder
-from astral.sun import sun
 
 import cli
 import gui
 from backup.profilemanager import ProfileManager
 from libs.threading import Threads
 
-
-class SunHours:
-    def __init__(self, dawn, dusk):
-        self.dawn = dawn
-        self.dusk = dusk
+from .eventchecker import EventChecker
 
 
 class ThemeManager:
     @staticmethod
     def start_check_service():
-        while True:
-            ThemeManager.check_theme()
+        EventChecker(
+            on_light=ThemeManager.on_light, on_dark=ThemeManager.on_dark
+        ).start()
 
     @staticmethod
-    def check_theme():
-        now = datetime.now()
-        sunhours = ThemeManager.sun_hours
-        daytime = "light" if sunhours.dawn < now < sunhours.dusk else "dark"
-        if daytime != ProfileManager.active_profile:
-            ThemeManager.apply(daytime, ask_confirm=True)
-
-        next_event = sunhours.dawn if now < sunhours.dawn else sunhours.dusk
-        while datetime.now() < next_event:
-            time.sleep(5)
-
-    @classmethod
-    @property
-    def sun_hours(cls):
-        result = geocoder.ip("me").current_result
-        # fallback location when no internet or too many requests
-        location = (
-            result.raw
-            if result
-            else {"city": "Brugge", "region": "Flanders", "country": "BE"}
-        )
-        location_info = astral.LocationInfo(
-            location["city"], location["region"], location["country"]
-        )
-
-        sunhours = ThemeManager.get_sun_info(location_info)
-        now = datetime.now()
-        if now > sunhours.dusk:  # get events for next day if already dark
-            sunhours = ThemeManager.get_sun_info(
-                location_info, date=now + timedelta(days=1)
-            )
-        return sunhours
+    def on_light():
+        ThemeManager.check_theme("light")
 
     @staticmethod
-    def get_sun_info(location_info, date=None):
-        sun_info = sun(location_info.observer, date=date)
+    def on_dark():
+        ThemeManager.check_theme("dark")
 
-        dawn = sun_info["dawn"].replace(tzinfo=None) - timedelta(
-            minutes=30
-        )  # light = dawn - 30 min
-        dusk = sun_info["dusk"].replace(tzinfo=None) + timedelta(
-            minutes=30
-        )  # dark = dusk + 30 min
-
-        return SunHours(dawn, dusk)
+    @staticmethod
+    def check_theme(name):
+        if ProfileManager.active_profile != name:
+            ThemeManager.apply(name, ask_confirm=True)
 
     @staticmethod
     def apply(name, ask_confirm=False):
