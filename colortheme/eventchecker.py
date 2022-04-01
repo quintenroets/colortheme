@@ -11,7 +11,9 @@ from astral import sun
 class SunHours:
     def __init__(self, location_info: astral.LocationInfo, date: datetime = None):
         dawn, dusk = (
-            event(location_info.observer, date=date).replace(tzinfo=None).timestamp()
+            event(
+                location_info.observer, date=date
+            ).timestamp()  # .replace(tzinfo=None).timestamp() temporary fix for weird api
             for event in (sun.dawn, sun.dusk)
         )
         buffer_time = timedelta(minutes=30).total_seconds()
