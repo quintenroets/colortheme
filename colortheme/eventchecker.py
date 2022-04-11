@@ -14,7 +14,8 @@ class SunHours:
             event(location_info.observer, date=date).timestamp()
             for event in (sun.dawn, sun.dusk)
         )
-        buffer_time = timedelta(minutes=30).total_seconds()
+        buffer_minutes = 0  # 30
+        buffer_time = timedelta(minutes=buffer_minutes).total_seconds()
 
         self.light: float = dawn - buffer_time  # light = dawn - 30 min
         self.dark: float = dusk + buffer_time  # dark = dusk + 30 min
