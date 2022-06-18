@@ -37,7 +37,7 @@ def apply(name, ask_confirm=False):
 
 def start_apply(theme, open_programs):
     custom_apply_mapping = {
-        "chromium": apply_chromium,
+        # "chromium": apply_chromium,
         "pycharm": apply_pycharm,
     }
     custom_apply = set({})
