@@ -31,7 +31,8 @@ def sun_hours():
     location = (
         result.raw
         if result
-        else {"city": "Brugge", "region": "Flanders", "country": "BE"}
+        # else {"city": "Brugge", "region": "Flanders", "country": "BE"}
+        else {"city": "New York City", "region": "New York", "country": "US"}
     )
     location_info = astral.LocationInfo(
         location["city"], location["region"], location["country"]
