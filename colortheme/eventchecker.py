@@ -12,6 +12,7 @@ class SunHours:
     def __init__(self, location_info: astral.LocationInfo, date: datetime = None):
         dawn, dusk = (
             event(location_info.observer, date=date).timestamp()
+            - time.localtime().tm_gmtoff  # convert to gtm time
             for event in (sun.dawn, sun.dusk)
         )
         buffer_minutes = 0  # 30
@@ -25,24 +26,18 @@ class SunHours:
         return self.light if time.time() < self.light else self.dark
 
 
-def sun_hours():
+def get_sun_hours():
     result = geocoder.ip("me").current_result
     # fallback location when no internet or too many requests
-    location = (
-        result.raw
-        if result
-        # else {"city": "Brugge", "region": "Flanders", "country": "BE"}
-        else {"city": "New York City", "region": "New York", "country": "US"}
-    )
-    location_info = astral.LocationInfo(
-        location["city"], location["region"], location["country"]
-    )
+    region = result.raw["region"] if result else "New York"
+    location_info = astral.LocationInfo(name="Home", region=region)
+    sun_hours = SunHours(location_info)
 
-    sunhours = SunHours(location_info)
     now = time.time()
-    if now > sunhours.dark:  # get events for next day if already dark
-        sunhours = SunHours(location_info, date=datetime.now() + timedelta(days=1))
-    return sunhours
+
+    if now > sun_hours.dark:  # get events for next day if already dark
+        sun_hours = SunHours(location_info, date=datetime.now() + timedelta(days=1))
+    return sun_hours
 
 
 @dataclass
@@ -55,15 +50,15 @@ class EventChecker:
             self.check_event()
 
     def check_event(self):
-        sunhours = sun_hours()
+        hours = get_sun_hours()
 
-        if sunhours.light < time.time() < sunhours.dark:
+        if hours.light < time.time() < hours.dark:
             if self.on_light:
                 self.on_light()
         else:
             if self.on_dark:
                 self.on_dark()
 
-        next_event = sunhours.next_event
+        next_event = hours.next_event
         while time.time() < next_event:
             time.sleep(5)
