@@ -21,9 +21,11 @@ def check_theme(name):
 
 def apply(name, ask_confirm=False):
     programs = ["pycharm", "dolphin", "kate", "chromium"]
-    open_programs = [
-        p for p in programs if cli.get("xdotool search --onlyvisible", p, check=False)
-    ]
+
+    def is_open(program: str):
+        return cli.is_succes("xdotool search --onlyvisible", program)
+
+    open_programs = [p for p in programs if is_open(p)]
     confirmed = (
         not ask_confirm
         or not any(open_programs)
