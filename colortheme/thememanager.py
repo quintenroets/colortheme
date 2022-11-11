@@ -23,7 +23,7 @@ def apply(name, ask_confirm=False):
     programs = ["pycharm", "dolphin", "kate", "chromium"]
 
     def is_open(program: str):
-        return cli.is_succes("xdotool search --onlyvisible", program)
+        return cli.is_success("xdotool search --onlyvisible", program)
 
     open_programs = [p for p in programs if is_open(p)]
     confirmed = (
