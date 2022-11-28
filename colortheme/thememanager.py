@@ -20,7 +20,7 @@ def check_theme(name):
 
 
 def apply(name, ask_confirm=False):
-    programs = ["pycharm", "dolphin", "kate", "chromium"]
+    programs = ["pycharm", "dolphin", "kate", "chromium-browser"]
 
     def is_open(program: str):
         return cli.is_success("xdotool search --onlyvisible", program)
