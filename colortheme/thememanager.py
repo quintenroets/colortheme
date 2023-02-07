@@ -19,30 +19,35 @@ def check_theme(name):
         apply(name, ask_confirm=True)
 
 
-def apply(name, ask_confirm=False):
+def get_open_programs():
     programs = ["pycharm", "dolphin", "kate"]
 
     def is_open(program: str):
         return cli.is_success("xdotool search --onlyvisible", program)
 
-    open_programs = [p for p in programs if is_open(p)]
+    return [p for p in programs if is_open(p)]
+
+
+def apply(name, ask_confirm=False):
     confirmed = (
         not ask_confirm
-        or not any(open_programs)
+        or not any(get_open_programs())
         or gui.ask_yn(f"Change to {name} theme?")
     )
     if confirmed:
-        start_apply(name, open_programs)
+        start_apply(name)
 
     return confirmed
 
 
-def start_apply(theme, open_programs):
+def start_apply(theme):
     custom_apply_mapping = {
         # "chromium": apply_chromium,
         "pycharm": apply_pycharm,
     }
     custom_apply = set({})
+    open_programs = get_open_programs()
+
     for program, function in custom_apply_mapping.items():
         if program in open_programs:
             open_programs.remove(program)
