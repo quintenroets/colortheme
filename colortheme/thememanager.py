@@ -73,7 +73,10 @@ def restart(name):
 
 
 def restartplasma():
-    cli.run_commands("plasmashell --replace", "kwin --replace", wait=False)
+    cli.run(
+        "qdbus org.kde.plasmashell /PlasmaShell org.kde.PlasmaShell.refreshCurrentShell"
+    )
+    cli.run("kwin --replace", wait=False)
 
 
 def apply_pycharm(name):
