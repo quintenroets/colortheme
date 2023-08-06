@@ -1,0 +1,47 @@
+[project]
+name = "colortheme"
+version = "0.0.1"
+description = ""
+authors = [{ name = "Quinten Roets", email = "qdr2104@columbia.edu" }]
+license = { text = "MIT" }
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "astral",
+    "geocoder",
+    "quinten-cli",
+    "superpathlib",
+    "backup @ git+https://github.com/quintenroets/backup",
+    "gui @ git+https://github.com/quintenroets/gui",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pre-commit"
+]
+test = [
+    "pytest"
+]
+
+[project.scripts]
+colortheme = "colortheme.main:main"
+light = "colortheme.main:go_light"
+dark = "colortheme.main:go_dark"
+restartplasma = "colortheme.main:restartplasma"
+
+[tool.setuptools.package-data]
+music = ["assets/**"]
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[tool.ruff]
+select = [
+    "E", # pycodestyle errors
+    "W", # pycodestyle warnings
+    "F", # pyflakes
+    "I", # isort
+    "UP", # pyupgrade
+]
+fix = true
