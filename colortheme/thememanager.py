@@ -4,7 +4,7 @@ from functools import cache
 import cli
 import dbus
 import gui
-from backup import profilemanager
+from backup.backups import profile
 from libs.threading import Threads
 
 from .eventchecker import EventChecker
@@ -23,7 +23,7 @@ def restartplasma():
 
 
 def check_theme(name):
-    if profilemanager.active_profile.name != name:
+    if profile.Backup().profile_name != name:
         apply(name, ask_confirm=True)
 
 
@@ -74,7 +74,7 @@ class ThemeManager:
                 open_programs.remove(program)
                 custom_apply.add(function)
 
-        profilemanager.apply(theme)
+        profile.Backup().apply_profile(theme)
         cls.apply_desktop_image(theme)
         cls.apply_start_icon(theme)
         restartplasma()

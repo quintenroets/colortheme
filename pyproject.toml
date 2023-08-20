@@ -1,6 +1,6 @@
 [project]
 name = "colortheme"
-version = "0.0.1"
+version = "0.0.2"
 description = ""
 authors = [{ name = "Quinten Roets", email = "qdr2104@columbia.edu" }]
 license = { text = "MIT" }
@@ -8,10 +8,10 @@ readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
     "astral",
+    "backupmaster",
     "geocoder",
     "quinten-cli",
     "superpathlib",
-    "backup @ git+https://github.com/quintenroets/backup",
     "gui @ git+https://github.com/quintenroets/gui",
 ]
 
