@@ -11,8 +11,8 @@ dependencies = [
     "backupmaster",
     "geocoder",
     "quinten-cli",
+    "quinten-gui",
     "superpathlib",
-    "gui @ git+https://github.com/quintenroets/gui",
 ]
 
 [project.optional-dependencies]

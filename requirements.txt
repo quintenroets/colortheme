@@ -1,6 +1,6 @@
 astral
+backupmaster
 geocoder
 quinten-cli
+quinten-gui
 superpathlib
-backup @ git+https://github.com/quintenroets/backup
-gui @ git+https://github.com/quintenroets/gui
