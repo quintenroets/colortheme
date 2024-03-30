@@ -55,7 +55,7 @@ class ThemeManager:
     @classmethod
     def open_programs(cls):
         def is_open(program: str):
-            return cli.is_success("xdotool search --onlyvisible", program)
+            return cli.completes_successfully("xdotool search --onlyvisible", program)
 
         programs = ["dolphin", "kate"]
         return [program for program in programs if is_open(program)]
@@ -124,13 +124,13 @@ class ThemeManager:
 
 
 def restart(name):
-    cli.get(f"wmctrl -c {name}")
+    cli.capture_output(f"wmctrl -c {name}")
 
     # wait until closed
-    while cli.get("xdotool search --onlyvisible", name, check=False):
+    while cli.capture_output("xdotool search --onlyvisible", name, check=False):
         time.sleep(0.5)
 
-    cli.start(name)
+    cli.launch(name)
 
 
 def apply_pycharm(name):
