@@ -10,7 +10,7 @@ dependencies = [
     "astral",
     "backupmaster",
     "geocoder",
-    "powercli >=0.1.1, <1",
+    "powercli >=0.2.1, <1",
     "quinten-gui",
     "superpathlib",
 ]
