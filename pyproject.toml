@@ -1,6 +1,6 @@
 [project]
 name = "colortheme"
-version = "0.0.2"
+version = "0.1.0"
 description = ""
 authors = [{ name = "Quinten Roets", email = "qdr2104@columbia.edu" }]
 license = { text = "MIT" }
@@ -10,7 +10,7 @@ dependencies = [
     "astral",
     "backupmaster",
     "geocoder",
-    "quinten-cli",
+    "powercli >=0.2.1, <1",
     "quinten-gui",
     "superpathlib",
 ]

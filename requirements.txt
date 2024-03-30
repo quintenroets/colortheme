@@ -1,6 +1,6 @@
 astral
 backupmaster
 geocoder
-quinten-cli
+powercli
 quinten-gui
 superpathlib
