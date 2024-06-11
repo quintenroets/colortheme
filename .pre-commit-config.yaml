@@ -34,7 +34,6 @@ repos:
   - repo: https://github.com/quintenroets/package-dev-tools
     rev: v0.6.0
     hooks:
-      - id: check-shields
       - id: check-version
 
 ci:

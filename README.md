@@ -14,7 +14,3 @@ colortheme
 ```shell
 pip install colortheme
 ```
-or
-```shell
-pip install git+https://github.com/quintenroets/colortheme.git
-```
