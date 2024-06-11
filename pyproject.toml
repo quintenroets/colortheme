@@ -23,9 +23,9 @@ dev = [
 
 [project.scripts]
 colortheme = "colortheme.cli:entry_point"
-restartplasma = "colortheme.cli:restart_plasma"
-light = "colortheme.cli:go_light"
-dark = "colortheme.cli:go_dark"
+restartplasma = "colortheme.cli.entry_point:restart_plasma"
+light = "colortheme.cli.entry_point:go_light"
+dark = "colortheme.cli.entry_point:go_dark"
 
 [build-system]
 requires = ["setuptools"]
