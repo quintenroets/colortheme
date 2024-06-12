@@ -1,47 +1,76 @@
 [project]
 name = "colortheme"
 version = "0.1.0"
-description = ""
-authors = [{ name = "Quinten Roets", email = "qdr2104@columbia.edu" }]
-license = { text = "MIT" }
+description = "Automate color theme configuration based on time of the day"
+authors = [{name = "Quinten Roets", email = "qdr2104@columbia.edu"}]
+license = {text = "MIT"}
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
-    "astral",
-    "backupmaster",
-    "geocoder",
-    "powercli >=0.2.1, <1",
-    "quinten-gui",
-    "superpathlib",
+    "astral >= 3.2",
+    "backupmaster >= 1.0.0",
+    "geocoder >= 1.38.1",
 ]
 
 [project.optional-dependencies]
 dev = [
-    "pre-commit"
+    "package-dev-tools >=0.5.11, <1",
+    "package-dev-utils >=0.1.6, <1",
 ]
-test = [
-    "pytest"
-]
+
+[project.urls]
+"Source Code" = "https://github.com/quintenroets/colortheme"
 
 [project.scripts]
-colortheme = "colortheme.main:main"
-light = "colortheme.main:go_light"
-dark = "colortheme.main:go_dark"
-restartplasma = "colortheme.main:restartplasma"
-
-[tool.setuptools.package-data]
-music = ["assets/**"]
+colortheme = "colortheme.cli:entry_point"
+restartplasma = "colortheme.cli.entry_point:restart_plasma"
+light = "colortheme.cli.entry_point:go_light"
+dark = "colortheme.cli.entry_point:go_dark"
 
 [build-system]
 requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
 
-[tool.ruff]
-select = [
-    "E", # pycodestyle errors
-    "W", # pycodestyle warnings
-    "F", # pyflakes
-    "I", # isort
-    "UP", # pyupgrade
+[tool.coverage.run]
+command_line = "-m pytest"
+
+[tool.coverage.report]
+precision = 4
+fail_under = 100
+
+[tool.mypy]
+strict = true
+no_implicit_reexport = false
+
+[[tool.mypy.overrides]]
+module = [
+    "geocoder.*",
+    "gui.*",
 ]
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+pythonpath = [
+    "src", ".",
+]
+
+[tool.ruff]
 fix = true
+
+[tool.ruff.lint]
+select = [
+    "E",  # pycodestyle errors
+    "W",  # pycodestyle warnings
+    "F",  # pyflakes
+    "I",  # isort
+    "UP",  # pyupgrade
+]
+
+[tool.ruff.lint.isort]
+known-first-party = ["src"]
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["F401"]
+
+[tool.setuptools.package-data]
+colortheme = ["py.typed", "assets/**"]

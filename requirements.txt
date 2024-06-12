@@ -1,6 +1,0 @@
-astral
-backupmaster
-geocoder
-powercli
-quinten-gui
-superpathlib
