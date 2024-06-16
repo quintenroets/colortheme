@@ -1,15 +1,13 @@
 [project]
 name = "colortheme"
 version = "0.1.0"
-description = "Automate color theme configuration based on time of the day"
+description = "Template for Python package published on PyPI"
 authors = [{name = "Quinten Roets", email = "qdr2104@columbia.edu"}]
 license = {text = "MIT"}
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
-    "astral >= 3.2",
-    "backupmaster >= 1.0.0",
-    "geocoder >= 1.38.1",
+    "package-utils[context] >=0.6.1, <1",
 ]
 
 [project.optional-dependencies]
@@ -23,16 +21,13 @@ dev = [
 
 [project.scripts]
 colortheme = "colortheme.cli:entry_point"
-restartplasma = "colortheme.cli.entry_point:restart_plasma"
-light = "colortheme.cli.entry_point:go_light"
-dark = "colortheme.cli.entry_point:go_dark"
 
 [build-system]
 requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
 
 [tool.coverage.run]
-command_line = "-m pytest"
+command_line = "-m pytest tests"
 
 [tool.coverage.report]
 precision = 4
@@ -41,13 +36,6 @@ fail_under = 100
 [tool.mypy]
 strict = true
 no_implicit_reexport = false
-
-[[tool.mypy.overrides]]
-module = [
-    "geocoder.*",
-    "gui.*",
-]
-ignore_missing_imports = true
 
 [tool.pytest.ini_options]
 pythonpath = [
@@ -73,4 +61,4 @@ known-first-party = ["src"]
 "__init__.py" = ["F401"]
 
 [tool.setuptools.package-data]
-colortheme = ["py.typed", "assets/**"]
+colortheme = ["py.typed"]
