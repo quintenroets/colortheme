@@ -20,9 +20,8 @@ class EventChecker:
         if hours.light < time.time() < hours.dark:
             if self.on_light:
                 self.on_light()
-        else:
-            if self.on_dark:
-                self.on_dark()
+        elif self.on_dark:
+            self.on_dark()
 
         next_event = hours.next_event
         while time.time() < next_event:

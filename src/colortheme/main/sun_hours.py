@@ -8,7 +8,9 @@ from astral import sun
 
 class SunHours:
     def __init__(
-        self, location_info: astral.LocationInfo, date: datetime | None = None
+        self,
+        location_info: astral.LocationInfo,
+        date: datetime | None = None,
     ) -> None:
         dawn, dusk = (
             event(location_info.observer, date=date).timestamp()
