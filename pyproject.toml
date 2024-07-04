@@ -7,9 +7,9 @@ license = {text = "MIT"}
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
-    "astral >= 3.2",
-    "backupmaster >= 1.0.0",
-    "geocoder >= 1.38.1",
+    "astral >=3.2, <4",
+    "backupmaster >=1.2.10, <2",
+    "geocoder >=1.38.1, <2",
 ]
 
 [project.optional-dependencies]
@@ -58,12 +58,12 @@ pythonpath = [
 fix = true
 
 [tool.ruff.lint]
-select = [
-    "E",  # pycodestyle errors
-    "W",  # pycodestyle warnings
-    "F",  # pyflakes
-    "I",  # isort
-    "UP",  # pyupgrade
+select = ["ALL"]
+ignore = [
+    "ANN101",  # annotate self
+    "ANN102",  # annotate cls
+    "ANN401",  # annotated with Any
+    "D", # docstrings
 ]
 
 [tool.ruff.lint.isort]
@@ -71,6 +71,7 @@ known-first-party = ["src"]
 
 [tool.ruff.lint.per-file-ignores]
 "__init__.py" = ["F401"]
+"tests/*" = ["S101"]  # assert used
 
 [tool.setuptools.package-data]
 colortheme = ["py.typed", "assets/**"]

@@ -1,5 +1,5 @@
 import time
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 import astral
 import geocoder
@@ -8,7 +8,9 @@ from astral import sun
 
 class SunHours:
     def __init__(
-        self, location_info: astral.LocationInfo, date: datetime | None = None
+        self,
+        location_info: astral.LocationInfo,
+        date: datetime | None = None,
     ) -> None:
         dawn, dusk = (
             event(location_info.observer, date=date).timestamp()
@@ -36,5 +38,8 @@ def fetch_sun_hours() -> SunHours:
     now = time.time()
 
     if now > sun_hours.dark:  # get events for next day if already dark
-        sun_hours = SunHours(location_info, date=datetime.now() + timedelta(days=1))
+        sun_hours = SunHours(
+            location_info,
+            date=datetime.now(tz=timezone.utc) + timedelta(days=1),
+        )
     return sun_hours
