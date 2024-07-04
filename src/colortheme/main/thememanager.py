@@ -3,7 +3,7 @@ import time
 import cli
 from backup.backups import profile
 
-from ..models import Path
+from colortheme.models import Path
 
 
 class ThemeManager:
