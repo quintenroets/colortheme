@@ -16,7 +16,7 @@ def main() -> None:
 
 
 def check_theme(name: str) -> None:
-    if profile.Backup().profile_name != name:
+    if profile.Backup().active_profile != name:
         apply(name, ask_confirm=True)
 
 
