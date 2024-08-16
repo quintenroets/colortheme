@@ -9,8 +9,8 @@ from colortheme.models import Path
 class ThemeManager:
     @classmethod
     def restart_plasma(cls) -> None:
-        cls.run_kde("refreshCurrentShell")
-        cli.launch("kwin --replace")
+        cli.run("kquitapp5", "plasmashell")
+        cli.launch("kstart5", "plasmashell")
 
     @classmethod
     def run_kde(cls, command: str, *options: str) -> str:

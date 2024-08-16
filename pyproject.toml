@@ -1,6 +1,6 @@
 [project]
 name = "colortheme"
-version = "0.1.0"
+version = "0.1.1"
 description = "Automate color theme configuration based on time of the day"
 authors = [{name = "Quinten Roets", email = "qdr2104@columbia.edu"}]
 license = {text = "MIT"}
