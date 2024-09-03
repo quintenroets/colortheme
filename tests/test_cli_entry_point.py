@@ -1,3 +1,8 @@
+<<<<<<< HEAD
+=======
+from package_dev_utils.tests.args import no_cli_args
+
+>>>>>>> template
 from colortheme import cli
 from package_dev_utils.tests.args import no_cli_args
 
