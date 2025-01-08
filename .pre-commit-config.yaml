@@ -39,10 +39,5 @@ repos:
 ci:
     autofix_commit_msg: auto fixes from pre-commit hooks
     autoupdate_commit_msg: 'pre-commit auto updates'
-<<<<<<< HEAD
-    autoupdate_schedule: monthly
-    skip: [mypy]
-=======
     autoupdate_schedule: quarterly
-    skip: [mypy, run-tests, check-coverage]
->>>>>>> template
+    skip: [mypy]
