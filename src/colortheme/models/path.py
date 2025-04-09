@@ -16,6 +16,6 @@ class Path(superpathlib.Path):
 
     @classmethod
     @classproperty
-    def script_templates(cls: type[T]) -> T:
+    def script_templates(cls) -> Self:
         path = cls.source_root / "assets" / "script_templates"
-        return typing.cast(T, path)
+        return typing.cast("Self", path)
