@@ -3,7 +3,7 @@ name = "colortheme"
 version = "0.1.1"
 description = "Automate color theme configuration based on time of the day"
 authors = [{name = "Quinten Roets", email = "qdr2104@columbia.edu"}]
-license = {text = "MIT"}
+license = "MIT"
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
