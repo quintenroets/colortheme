@@ -1,5 +1,3 @@
-import time
-
 import cli
 from backup.backups import profile
 
@@ -22,14 +20,6 @@ class ThemeManager:
     @classmethod
     def run_kde_script(cls, script: str) -> str:
         return cls.run_kde("evaluateScript", script)
-
-    @classmethod
-    def open_programs(cls) -> list[str]:
-        def is_open(program: str) -> bool:
-            return cli.completes_successfully("xdotool search --onlyvisible", program)
-
-        programs = ["dolphin", "kate"]
-        return [program for program in programs if is_open(program)]
 
     @classmethod
     def start_apply(cls, theme: str) -> None:
@@ -79,9 +69,5 @@ class ThemeManager:
 
 def restart(name: str) -> None:
     cli.capture_output(f"wmctrl -c {name}")
-
-    # wait until closed
-    while cli.capture_output("xdotool search --onlyvisible", name, check=False):
-        time.sleep(0.5)
 
     cli.launch(name)

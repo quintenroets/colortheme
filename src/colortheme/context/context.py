@@ -1,5 +1,5 @@
 from package_utils.context import Context
 
-from colortheme.models import Options
+from .options import Options
 
 context = Context[Options, None, None](Options, None, None)
