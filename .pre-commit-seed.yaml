@@ -16,5 +16,8 @@
   args: [.]
   fail_fast: true
   require_serial: true
+- id: run-tests
+  entry: coverage run
+  fail_fast: true
 - entry: check-version
 - entry: check-import

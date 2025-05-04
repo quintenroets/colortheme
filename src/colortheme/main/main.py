@@ -1,4 +1,3 @@
-import gui
 from backup.backups import profile
 
 from .eventchecker import EventChecker
@@ -22,11 +21,7 @@ def check_theme(name: str) -> None:
 
 
 def apply(name: str, *, ask_confirm: bool = False) -> bool:
-    confirmed = (
-        not ask_confirm
-        or not any(ThemeManager.open_programs())
-        or gui.ask_yn(f"Change to {name} theme?")
-    )
+    confirmed = not ask_confirm
     if confirmed:
         ThemeManager.start_apply(name)
 
